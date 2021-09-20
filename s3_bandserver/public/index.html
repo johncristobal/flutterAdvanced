@@ -23,6 +23,15 @@
         socket.on('mensaje', function(payload){
             console.log(payload);
         });
+
+        socket.on('nuevo-mensaje', function(payload){
+            console.log(payload);
+        });
+
+        socket.on('bandas-activas', function(payload){
+            console.table("bandas activas");
+            console.log(payload);
+        });
     </script>
 </body>
 </html>

@@ -9,24 +9,28 @@ enum ServerStatus {
 class SocketService with ChangeNotifier{
 
   ServerStatus _serverStatus = ServerStatus.Connecting;  
-  get serverStatus => this._serverStatus;
+  ServerStatus get serverStatus => this._serverStatus;
+
+  late IO.Socket _socket;
+  IO.Socket get socket => this._socket;
 
   SocketService(){
     _initConfig();
   }
 
   _initConfig(){
-    IO.Socket socket = IO.io('http://192.168.100.6:3001', {
+    _socket = IO.io('http://localhost:3001', {
       'transports': ['websocket'],
       'autoConnect': true
     });
 
-    socket.on('connect', (_) {
+    _socket.on('connect', (_) {
       print('Conectado');
       this._serverStatus = ServerStatus.Online;
       notifyListeners();
     });
-    socket.on('disconnect', (_) {
+
+    _socket.on('disconnect', (_) {
       print('DisConectado');
       this._serverStatus = ServerStatus.Offline;
       notifyListeners();
