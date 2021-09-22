@@ -18,8 +18,7 @@ class LoginPage extends StatelessWidget {
               children: [
                 _Logo(),
                 _Form(),
-                _Labels(),
-                  
+                _Labels(ruta: 'register',),                  
                 Text("Terminos y condicinoes", style: TextStyle(fontWeight: FontWeight.w200),)
               ],
             ),
@@ -97,6 +96,10 @@ class __FormState extends State<_Form> {
 
 class _Labels extends StatelessWidget {
 
+  final String ruta;
+
+  const _Labels({Key? key, required this.ruta}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -104,7 +107,11 @@ class _Labels extends StatelessWidget {
         children: [
           Text("No tienes cuenta", style: TextStyle(color: Colors.black54, fontSize: 15, fontWeight: FontWeight.w300),),
           SizedBox(height: 10),
-          Text("Crea una ahora", style: TextStyle(color: Colors.blue[600], fontSize: 18, fontWeight: FontWeight.bold))
+          GestureDetector(
+            onTap: (){
+              Navigator.pushReplacementNamed(context, this.ruta);
+            },
+            child: Text("Crea una ahora", style: TextStyle(color: Colors.blue[600], fontSize: 18, fontWeight: FontWeight.bold)))
         ],
       ),
     );
