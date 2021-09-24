@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class BotonAzul extends StatelessWidget {
   
   final String text;
-  final Function() onPressed;
+  final Function()? onPressed;
+  final bool loading;
 
   const BotonAzul({
     Key? key, 
     required this.text, 
-    required this.onPressed
+    required this.loading, 
+    this.onPressed
     }) : super(key: key); 
 
   @override
@@ -16,7 +18,7 @@ class BotonAzul extends StatelessWidget {
     return MaterialButton(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: this.loading ? Colors.grey : Colors.blue,
           borderRadius: BorderRadius.circular(32)
         ),
         width: double.infinity,
