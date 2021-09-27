@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:s4_realtimechat/helpers/mostrarAlerta.dart';
 import 'package:s4_realtimechat/services/auth_service.dart';
+import 'package:s4_realtimechat/services/socket_service.dart';
 import 'package:s4_realtimechat/widgets/btn_azul.dart';
 import 'package:s4_realtimechat/widgets/custom_input.dart';
 
@@ -68,6 +69,7 @@ class __FormState extends State<_Form> {
   Widget build(BuildContext context) {
 
     final provider = Provider.of<AuthService>(context);
+    final providerSocket = Provider.of<SocketService>(context);
 
     return Container(
       margin: EdgeInsets.only(top: 40),
@@ -105,6 +107,7 @@ class __FormState extends State<_Form> {
               final regiseterOk = await provider.register(nameCtrl.text.trim(), emailCtrl.text.trim(), passCtrl.text.trim());
 
               if(regiseterOk){  
+                providerSocket.connect();
                 Navigator.pushReplacementNamed(context, "usuarios");
               }else{
                 mostrarAlerta(context, "Registro incorrecto", "Revise información");

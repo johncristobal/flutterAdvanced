@@ -17,6 +17,18 @@ const generarjwt = ( uid ) => {
     })
 }
 
+const comprobarJWT = (token = '') => {
+    try{
+
+        const { uid } = jwt.verify( token, process.env.SECRET_KEY );
+        return [true, uid];
+    }catch(e){
+        console.log(e);
+        return [false, null];
+    }
+}
+
 module.exports = {
-    generarjwt
+    generarjwt,
+    comprobarJWT
 }

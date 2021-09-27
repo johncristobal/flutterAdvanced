@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:s4_realtimechat/global/environments.dart';
+import 'package:s4_realtimechat/services/auth_service.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 enum ServerStatus {
@@ -14,14 +16,21 @@ class SocketService with ChangeNotifier{
   late IO.Socket _socket;
   IO.Socket get socket => this._socket;
 
-  SocketService(){
-    _initConfig();
-  }
+  // SocketService(){
+  //   _initConfig();
+  // }
 
-  _initConfig(){
-    _socket = IO.io('http://localhost:3001', {
+  connect() async {
+
+    final token = await AuthService.getToken();
+
+    _socket = IO.io( Env.apisocketUrlUrl, {
       'transports': ['websocket'],
-      'autoConnect': true
+      'autoConnect': true,
+      'forceNew': true,
+      'extraHeaders': {
+        'x-token': token
+      }
     });
 
     _socket.on('connect', (_) {
@@ -35,5 +44,9 @@ class SocketService with ChangeNotifier{
       this._serverStatus = ServerStatus.Offline;
       notifyListeners();
     });
+  }
+
+  void disconnect(){
+    this._socket.disconnect();
   }
 }

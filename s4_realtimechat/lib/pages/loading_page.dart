@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:s4_realtimechat/pages/login_page.dart';
 import 'package:s4_realtimechat/pages/usuarios_page.dart';
 import 'package:s4_realtimechat/services/auth_service.dart';
+import 'package:s4_realtimechat/services/socket_service.dart';
 
 
 class LoadingPage extends StatelessWidget {
@@ -25,10 +26,11 @@ class LoadingPage extends StatelessWidget {
   Future checlLoginState( BuildContext context ) async {
 
     final provider = Provider.of<AuthService>(context, listen: false);
+    final providerSocket = Provider.of<SocketService>(context);
+    
     final auth = await provider.isLogged();
     if(auth) {
-      //conectar socket
-      //Navigator.pushReplacementNamed(context, "usuarios");
+      providerSocket.connect();
       Navigator.pushReplacement(context, PageRouteBuilder(
         pageBuilder: ( _ , __, ___) => UsuarioPage()
       ));
@@ -37,7 +39,5 @@ class LoadingPage extends StatelessWidget {
         pageBuilder: ( _ , __, ___) => LoginPage()
       ));
     }
-
-
   }
 }

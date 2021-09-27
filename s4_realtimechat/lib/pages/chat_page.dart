@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:s4_realtimechat/services/chat_service.dart';
 import 'package:s4_realtimechat/widgets/chat.dart';
 
 class ChatPage extends StatefulWidget {
@@ -17,29 +19,25 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin{
   bool _escribiendo = false;
   
   final List<ChatMessage> _messages = [
-    // ChatMessage(texto: "Hi",uid: "123",),
-    // ChatMessage(texto: "Hi",uid: "123",),
-    // ChatMessage(texto: "Hi",uid: "123",),
-    // ChatMessage(texto: "Hi",uid: "123",),
-    // ChatMessage(texto: "Hi",uid: "123",),
-    // ChatMessage(texto: "Hi",uid: "1234",),
-    // ChatMessage(texto: "Hi",uid: "1234",),
   ];
 
   @override
   Widget build(BuildContext context) {
+
+    final service = Provider.of<ChatService>(context, listen: false); 
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Column(
           children: [
             CircleAvatar(
-              child: Text('Te', style: TextStyle(fontSize: 12),),
+              child: Text(service.usuarioPara.nombre.substring(0,2), style: TextStyle(fontSize: 12),),
               backgroundColor: Colors.blue[100],
               maxRadius: 12,
             ),
             SizedBox(height: 2,),
-            Text("Alexs", style: TextStyle(color: Colors.black87, fontSize: 11),)
+            Text(service.usuarioPara.nombre, style: TextStyle(color: Colors.black87, fontSize: 11),)
           ],
         ),
         centerTitle: true,
