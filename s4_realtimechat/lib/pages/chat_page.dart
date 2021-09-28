@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:s4_realtimechat/models/mensajes_response.dart';
 import 'package:s4_realtimechat/services/auth_service.dart';
 import 'package:s4_realtimechat/services/chat_service.dart';
 import 'package:s4_realtimechat/services/socket_service.dart';
@@ -35,6 +36,8 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin{
 
     this.socketService.socket.on('mensaje-personal', _escucharMensaje);
 
+    this._cargarHistorial(this.chatservice.usuarioPara.uid);
+    
     super.initState();
   }
 
@@ -184,5 +187,22 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin{
     this.socketService.socket.off('mensaje-personal');
 
     super.dispose();
+  }
+
+  void _cargarHistorial(String uid) async {
+    List<Mensaje> chat = await this.chatservice.getChat(uid);
+
+    final history = chat.map((m) => new ChatMessage(
+      animationController: new AnimationController(
+        vsync: this, 
+        duration: Duration(milliseconds: 0)
+      )..forward(),
+      texto: m.mensaje, 
+      uid: m.de)
+    );
+
+    setState(() {
+      _messages.insertAll(0, history);
+    });
   }
 }
