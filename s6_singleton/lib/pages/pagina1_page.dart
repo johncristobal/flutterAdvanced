@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:s6_singleton/models/usuario.dart';
+import 'package:s6_singleton/services/usuario_service.dart';
 
 
 class Page1Page extends StatelessWidget {
@@ -9,8 +11,15 @@ class Page1Page extends StatelessWidget {
       appBar: AppBar(
         title: Text("Pagina 1"),
       ),
-      body: InfoUsuario(),
-     floatingActionButton: FloatingActionButton(
+      body: StreamBuilder(
+        stream: usuarioService.usuarioStream,
+        builder: (BuildContext context, AsyncSnapshot<Usuario> snapshot) {
+          return (snapshot.hasData) 
+            ? InfoUsuario(usuario: snapshot.data)
+            : Center(child: Text("No hay info de usuario"),);
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
        child: Icon(Icons.adb),
        onPressed: () => Navigator.pushNamed(context, "pagina2"),
      ),
@@ -20,6 +29,10 @@ class Page1Page extends StatelessWidget {
 
 class InfoUsuario extends StatelessWidget {
 
+  final Usuario? usuario;
+
+  const InfoUsuario({this.usuario});
+ 
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,8 +45,8 @@ class InfoUsuario extends StatelessWidget {
           Text("General", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,)),
           Divider(),
 
-          ListTile(title: Text("Nombre: "),),
-          ListTile(title: Text("Edad: "),),
+          ListTile(title: Text("Nombre: ${usuario!.nombre}"),),
+          ListTile(title: Text("Edad: ${usuario!.edad}"),),
 
           Text("Profesiones", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold,)),
           Divider(),
