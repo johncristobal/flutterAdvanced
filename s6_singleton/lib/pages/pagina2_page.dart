@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:s6_singleton/bloc/usuario/usuario_bloc.dart';
+import 'package:s6_singleton/models/usuario.dart';
 
 
 class Page2Page extends StatelessWidget {
@@ -17,7 +20,12 @@ class Page2Page extends StatelessWidget {
               child: Text("Establecer usuario", style: TextStyle(color: Colors.white),),
               color: Colors.blue,
               onPressed: (){
-
+                BlocProvider.of<UsuarioBloc>(context).add(
+                  ActivarUsuario( new Usuario(
+                    nombre: 'Alex', 
+                    edad: 34, 
+                    profesiones: ['web', 'app']))
+                );
               }
             ),
 
@@ -25,7 +33,9 @@ class Page2Page extends StatelessWidget {
               child: Text("Cambiar edad", style: TextStyle(color: Colors.white),),
               color: Colors.blue,
               onPressed: (){
-
+                BlocProvider.of<UsuarioBloc>(context).add(
+                  CambiarEdad( 45 )
+                );
               }
             ),
 
@@ -33,7 +43,9 @@ class Page2Page extends StatelessWidget {
               child: Text("Profesion",style: TextStyle(color: Colors.white),),
               color: Colors.blue,
               onPressed: (){
-
+                BlocProvider.of<UsuarioBloc>(context).add(
+                  AgregarProfesion()
+                );
               }
             )
           ],
