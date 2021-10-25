@@ -5,7 +5,6 @@ import 'package:s8_mapas/helpers/helpers.dart';
 import 'package:s8_mapas/pages/acceso_gps_page.dart';
 import 'package:s8_mapas/pages/mapa_page.dart';
 
-
 class LoadingPage extends StatefulWidget {
 
   @override
