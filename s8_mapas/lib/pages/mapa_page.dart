@@ -4,6 +4,8 @@ import 'package:s8_mapas/bloc/mapa/mapa_bloc.dart';
 import 'package:s8_mapas/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:s8_mapas/widgets/btn_center.dart';
+import 'package:s8_mapas/widgets/btn_miruta.dart';
+import 'package:s8_mapas/widgets/btn_seguir.dart';
 
 class MapaPage extends StatefulWidget {
 
@@ -39,6 +41,8 @@ class _MapaPageState extends State<MapaPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           BtnUbicacion(),
+          BtnMiRuta(),
+          BtnSeguir()
 
         ],
       ),
@@ -49,6 +53,8 @@ class _MapaPageState extends State<MapaPage> {
     final mapBloc = BlocProvider.of<MapaBloc>(context);
     if(!state.existeUbicacion) return Center(child: Text("Ubicando..."));
 
+    mapBloc.add(OnLocationUpdate( state.ubicacion! ));
+
     return GoogleMap(
       initialCameraPosition: CameraPosition(
         target: state.ubicacion ?? LatLng(0, 0),
@@ -57,6 +63,10 @@ class _MapaPageState extends State<MapaPage> {
       myLocationEnabled: true,
       myLocationButtonEnabled: false,
       onMapCreated: mapBloc.initMap,
+      polylines: (mapBloc.state.polylines != null) ? mapBloc.state.polylines!.values.toSet() : Set(),
+      onCameraMove: (CameraPosition pos){
+        mapBloc.add(OnMovioMapa(pos.target));
+      },
     );
   }
 }
