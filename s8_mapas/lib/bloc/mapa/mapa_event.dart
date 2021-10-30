@@ -18,3 +18,12 @@ class OnLocationUpdate extends MapaEvent{
   final LatLng ubicacion;
   OnLocationUpdate(this.ubicacion);
 }
+
+class OnCrearRuta extends MapaEvent{
+  final List<LatLng> coords;
+  final double distance;
+  final double duration;
+
+  OnCrearRuta(this.coords, this.distance, this.duration);
+
+}

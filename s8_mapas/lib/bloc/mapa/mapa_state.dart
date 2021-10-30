@@ -12,10 +12,10 @@ class MapaInitial {
   MapaInitial({
     this.mapaListo = false, 
     this.dibujar = true,
-    this.polylines,
+    Map<String, Polyline>? polylines,
     this.seguir = false,
     this.ubicacionCentral
-  });
+  }) : this.polylines = polylines ?? new Map();
 
   MapaInitial copyWith({
     bool? mapaListo,

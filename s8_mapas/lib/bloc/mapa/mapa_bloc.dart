@@ -22,6 +22,13 @@ class MapaBloc extends Bloc<MapaEvent, MapaInitial> {
 
   );
 
+  Polyline _mirutaDestino = new Polyline(
+    polylineId: PolylineId("mi_ruta_destino"),
+    width: 4,
+    color: Colors.black87
+
+  );
+
   void initMap(GoogleMapController mapController){
     if(!state.mapaListo){
       this._mapController = mapController;
@@ -33,7 +40,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaInitial> {
 
   void moverCamara( LatLng destino ){
     final update = CameraUpdate.newLatLng(destino);
-    this._mapController!.animateCamera(update);
+    this._mapController?.animateCamera(update);
   }
 
   @override
@@ -51,7 +58,10 @@ class MapaBloc extends Bloc<MapaEvent, MapaInitial> {
       yield state.copyWith(seguir: !state.seguir);
     }else if(event is OnMovioMapa){
       yield state.copyWith(ubicacionCentral: event.centroMapa);
+    }else if(event is OnCrearRuta){
+      yield* this._oncrearRuta(event);
     }
+    
   }
 
   Stream<MapaInitial> _onLocationUpdate(OnLocationUpdate event) async* {
@@ -75,7 +85,7 @@ class MapaBloc extends Bloc<MapaEvent, MapaInitial> {
     if(!state.dibujar){
       this._miruta = this._miruta.copyWith( colorParam:  Colors.black87);
     }else{
-    this._miruta = this._miruta.copyWith( colorParam:  Colors.transparent); 
+      this._miruta = this._miruta.copyWith( colorParam:  Colors.transparent); 
     }
 
     final currentP = state.polylines;
@@ -86,4 +96,17 @@ class MapaBloc extends Bloc<MapaEvent, MapaInitial> {
       polylines: currentP
     ); 
   }
+
+  Stream<MapaInitial> _oncrearRuta(OnCrearRuta event) async*{
+    this._mirutaDestino = this._mirutaDestino.copyWith(
+      pointsParam: event.coords
+    );
+
+    final current = state.polylines;
+    current?["mi_ruta_destino"] = this._mirutaDestino;
+
+    yield state.copyWith(
+      polylines: current
+    );
+  } 
 }

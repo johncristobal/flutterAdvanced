@@ -1,11 +1,13 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:s8_mapas/bloc/busqueda/busqueda_bloc.dart';
 import 'package:s8_mapas/bloc/mapa/mapa_bloc.dart';
 import 'package:s8_mapas/bloc/mi_ubicacion/mi_ubicacion_bloc.dart';
+import 'package:s8_mapas/helpers/loading.dart';
 import 'package:s8_mapas/services/traffic_service.dart';
-import 'package:polyline_do/polyline_do.dart';
+import 'package:polyline_do/polyline_do.dart' as Poly;
 
 class Marcador extends StatelessWidget {
 
@@ -83,6 +85,9 @@ class _BuildMarcador extends StatelessWidget {
   }
 
   void calcularDestino(BuildContext context) async {
+
+    calculando(context);
+    
     final service = new TrafficService();
     final inicio = context.read<MiUbicacionBloc>().state.ubicacion;
     final destino = context.read<MapaBloc>().state.ubicacionCentral;
@@ -92,11 +97,22 @@ class _BuildMarcador extends StatelessWidget {
     final duration = resp.routes![0].duration;
     final distance = resp.routes![0].distance;
 
-    final points = Polyline.Decode(
+    final points = Poly.Polyline.Decode(
       encodedString: geometry!, 
       precision: 6
     ).decodedCoords;
 
-    final temp = points;
+    final List<LatLng> coords = points.map((e) => LatLng(e[0], e[1])).toList();
+
+    context.read<MapaBloc>().add(OnCrearRuta(
+      coords,
+      distance ?? 0.0,
+      duration ?? 0.0
+    ));
+
+    Navigator.of(context).pop();
+
+    context.read<BusquedaBloc>().add(OnDesactivarMarcador());
+
   }
 }
