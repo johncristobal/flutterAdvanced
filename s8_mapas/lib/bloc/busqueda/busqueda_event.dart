@@ -10,3 +10,8 @@ class OnActivarMarcador extends BusquedaEvent{
 class OnDesactivarMarcador extends BusquedaEvent{
 
 }
+
+class OnAgregarHistorial extends BusquedaEvent { 
+  final SearchResult item;
+  OnAgregarHistorial(this.item);
+}
