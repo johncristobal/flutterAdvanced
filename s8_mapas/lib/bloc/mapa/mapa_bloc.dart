@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meta/meta.dart';
+import 'package:s8_mapas/helpers/custom_%20marker.dart';
+import 'package:s8_mapas/helpers/widgets_markers.dart';
 import 'package:s8_mapas/themes/ubertheme.dart';
 
 part 'mapa_event.dart';
@@ -105,8 +107,44 @@ class MapaBloc extends Bloc<MapaEvent, MapaInitial> {
     final current = state.polylines;
     current?["mi_ruta_destino"] = this._mirutaDestino;
 
+    //final icon = await getAssetsImageMarker();
+    final icon = await getMarkerInicio( event.duration.toInt() );
+    //final iconDesti = await getNetworkImageMarker();
+    final iconDesti = await getMarkerDestino(event.distance, event.nombreDestino );
+
+    final markInicio = new Marker(
+      anchor: Offset(0.0, 1.0),
+      markerId: MarkerId('inicio'),
+      position: event.coords[0],
+      icon: icon,
+      infoWindow: InfoWindow(
+        title: 'Mi casa',
+        snippet: 'Duracion: ${(event.duration / 60).floor()} minutos'
+      )
+    );
+
+    final markFinal = new Marker(
+      markerId: MarkerId('destino'),
+      position: event.coords[ event.coords.length - 1],
+      icon: iconDesti,
+      infoWindow: InfoWindow(
+        title: '${event.nombreDestino}',
+        snippet: 'Distancia: ${(event.distance / 1000).floor()} kms.'
+      )
+    );
+
+    final newM = {...state.markers!};
+    newM['inicio'] = markInicio;
+    newM['destino'] = markFinal;
+
+    Future.delayed(Duration(milliseconds: 300)).then((value) {
+      //_mapController!.showMarkerInfoWindow(MarkerId("inicio"));
+//      _mapController!.showMarkerInfoWindow(MarkerId("destino"));
+    });
+
     yield state.copyWith(
-      polylines: current
+      polylines: current,
+      markers: newM
     );
   } 
 }

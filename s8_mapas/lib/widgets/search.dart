@@ -90,6 +90,7 @@ class SearchBar extends StatelessWidget {
     final geometry = drivingTrafic.routes![0].geometry;
     final duration = drivingTrafic.routes![0].duration;
     final distance = drivingTrafic.routes![0].distance;
+    final nombreDestuno = result.nombreDestino;
 
     final points = Poly.Polyline.Decode(
       encodedString: geometry!, 
@@ -101,7 +102,8 @@ class SearchBar extends StatelessWidget {
     bloc.add(OnCrearRuta(
       coords,
       distance ?? 0.0,
-      duration ?? 0.0
+      duration ?? 0.0,
+      nombreDestuno ?? ""
     ));
 
     Navigator.of(context).pop();

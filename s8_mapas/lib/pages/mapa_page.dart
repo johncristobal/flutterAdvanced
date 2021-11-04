@@ -80,6 +80,7 @@ class _MapaPageState extends State<MapaPage> {
           myLocationButtonEnabled: false,
           onMapCreated: mapBloc.initMap,
           polylines: (mapBloc.state.polylines != null) ? mapBloc.state.polylines!.values.toSet() : Set(),
+          markers: (mapBloc.state.markers != null) ? mapBloc.state.markers!.values.toSet() : Set(),
           onCameraMove: (CameraPosition pos){
             mapBloc.add(OnMovioMapa(pos.target));
           },
