@@ -5,6 +5,7 @@ enum AnimationType{
   fadeIn
 }
 
+@deprecated
 class RouteTransitions {
 
   final BuildContext context;
