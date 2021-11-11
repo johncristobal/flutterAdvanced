@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:s12_googlesign/services/google_service.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Material App',
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Material App Bar'),
           actions: [
-            IconButton(onPressed: (){
-
+            IconButton(
+              onPressed: () async {
+                GoogleSignInService.signOut();
             }, icon: Icon(FontAwesomeIcons.doorOpen))
           ],
         ),
@@ -35,8 +37,8 @@ class MyApp extends StatelessWidget {
                       Text("Google", style: TextStyle(color: Colors.white, fontSize: 17)),
                     ],
                   ),
-                  onPressed: (){
-
+                  onPressed: () async {
+                    GoogleSignInService.signGoogle();
                   },
                 )
               ],
