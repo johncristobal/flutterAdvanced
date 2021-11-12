@@ -19,10 +19,12 @@ const validateToken = async (token) => {
             //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
         });
         const payload = ticket.getPayload();
+        console.log(ticket);
         console.log(payload);
         return payload;
     //    const userid = payload['sub'];
     }catch(err){
+        console.log(err);
         return err;
     }
     

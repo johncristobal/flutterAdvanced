@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:s12_googlesign/services/apple_service.dart';
 import 'package:s12_googlesign/services/google_service.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -38,7 +40,15 @@ class MyApp extends StatelessWidget {
                     ],
                   ),
                   onPressed: () async {
-                    GoogleSignInService.signGoogle();
+                    await GoogleSignInService.signGoogle();
+                  },
+                ),
+
+                SignInWithAppleButton(
+                  onPressed: () async {
+                     AppleSignInService.signIn();
+                    // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+                    // after they have been validated with Apple (see `Integration` section for more information on how to do this)
                   },
                 )
               ],
